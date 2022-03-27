@@ -41,7 +41,7 @@ logger = logging.getLogger()
 
 def go(args):
 
-    run = wandb.init(project="nyc_airbnb", job_type="train_random_forest")
+    run = wandb.init(job_type="train_random_forest")
     run.config.update(args)
 
     # Get the Random Forest configuration and update W&B
