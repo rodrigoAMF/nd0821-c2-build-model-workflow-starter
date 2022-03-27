@@ -22,33 +22,33 @@ def go(args):
     # particular version of the artifact
     # artifact_local_path = run.use_artifact(args.input_artifact).file()
 
-    logging.info("Downloading data from W&B")
+    logger.info("Downloading data from W&B")
     local_path = wandb.use_artifact(args.input_artifact).file()
     df = pd.read_csv(local_path)
 
     log_msg = f"Removing properties with price outside range [{args.min_price}, {args.max_price}]"
-    logging.info(log_msg)
+    logger.info(log_msg)
     idx = df['price'].between(args.min_price, args.max_price)
     df = df[idx].copy()
 
-    logging.info("Updating max value of minimum_nights")
+    logger.info("Updating max value of minimum_nights")
     df["minimum_nights"] = np.where(df["minimum_nights"] > args.max_nights,
                                     args.max_nights,
                                     df['minimum_nights'])
 
-    logging.info("Updating max value of number_of_reviews")
+    logger.info("Updating max value of number_of_reviews")
     df["number_of_reviews"] = np.where(df["number_of_reviews"] > args.max_number_reviews, 
                                        args.max_number_reviews, 
                                        df['number_of_reviews'])
 
-    logging.info("Updating max value of reviews_per_month")
+    logger.info("Updating max value of reviews_per_month")
     df["reviews_per_month"] = np.where(df["reviews_per_month"] > args.max_reviews_per_month, 
                                        args.max_reviews_per_month, 
                                        df['reviews_per_month'])
 
     df.to_csv(args.output_artifact, index=None)
 
-    logging.info("Creating and logging artifact with data clean to W&B")
+    logger.info("Creating and logging artifact with data clean to W&B")
     artifact = wandb.Artifact(
         args.output_artifact,
         type=args.output_type,
@@ -57,7 +57,7 @@ def go(args):
 
     artifact.add_file(args.output_artifact)
     run.log_artifact(artifact)
-    logging.info("Artifact successfully saved to W&B")
+    logger.info("Artifact successfully saved to W&B")
 
 
 if __name__ == "__main__":
