@@ -8,9 +8,35 @@ In this project you will build such a pipeline.
 
 Link to W&B project used: https://wandb.ai/rodrigoamf/nyc_airbnb/
 
+## Commands for quick usage of the pipeline
+Run entire machine learning pipeline, specifying each step 
+```
+mlflow run . -P steps=download,basic_cleaning,data_check,data_split,train_random_forest
+```
+
+Tune Hyperparameters
+```
+mlflow run . \
+  -P steps=train_random_forest \
+  -P hydra_options="modeling.max_tfidf_features=5,10,15,30 modeling.random_forest.max_features=0.1,0.33,0.5,0.75,1 -m"
+```
+
+Test production ready model
+```
+mlflow run . -P steps=test_regression_model
+```
+
+Run entire machine learning pipeline, using a release tag
+```
+mlflow run https://github.com/rodrigoamf/nd0821-c2-build-model-workflow-starter.git \
+             -v 1.0.1 \
+             -P hydra_options="etl.sample='sample2.csv'"
+```
+
 ## Table of contents
 
 - [Build an ML Pipeline for Short-Term Rental Prices in NYC](#build-an-ml-pipeline-for-short-term-rental-prices-in-nyc)
+  - [Commands for quick usage of the pipeline](#commands-for-quick-usage-of-the-pipeline)
   - [Table of contents](#table-of-contents)
   - [Preliminary steps](#preliminary-steps)
     - [Fork the Starter kit](#fork-the-starter-kit)
