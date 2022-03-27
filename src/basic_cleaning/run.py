@@ -48,7 +48,7 @@ def go(args):
                                        args.max_reviews_per_month, 
                                        df['reviews_per_month'])
 
-    df.to_csv(args.output_artifact)
+    df.to_csv(args.output_artifact, index=None)
 
     logging.info("Creating and logging artifact with data clean to W&B")
     artifact = wandb.Artifact(
