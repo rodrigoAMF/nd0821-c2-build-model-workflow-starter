@@ -15,8 +15,7 @@ logger = logging.getLogger()
 
 
 def go(args):
-
-    run = wandb.init(job_type="basic_cleaning")
+    run = wandb.init(project="nyc_airbnb", group="basic_data_cleaning")
     run.config.update(args)
 
     # Download input artifact. This will also log that this script is using this
@@ -24,7 +23,6 @@ def go(args):
     # artifact_local_path = run.use_artifact(args.input_artifact).file()
 
     logging.info("Downloading data from W&B")
-    run = wandb.init(project="nyc_airbnb", group="basic_data_cleaning")
     local_path = wandb.use_artifact(args.input_artifact).file()
     df = pd.read_csv(local_path)
 
